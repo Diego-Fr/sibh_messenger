@@ -9,6 +9,9 @@ const port = process.env.PORT
 const PHONE_NUMBERS = process.env.PHONE_NUMBERS //nao existe api (ao menos n achei) melhorar isso futuramente
 
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));s
+
 app.post('/grafana_callback',(req, res)=>{
     
     let body = req.body
