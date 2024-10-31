@@ -10,13 +10,11 @@ const PHONE_NUMBERS = process.env.PHONE_NUMBERS //nao existe api (ao menos n ach
 
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));s
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post('/grafana_callback',(req, res)=>{
     
     let body = req.body
-
-    console.log(req)
 
     if(body && body.receiver === 'SSSP - Alertas de Cotas'){
         //alerta de cota de referencia do grafana
@@ -45,10 +43,16 @@ const fluAlert = async obj =>{
 }
 
 async function start(labels){
+    console.log('enviando mensagem de alerta');
+    console.log(labels);
+    
+    
     let {current_level, current_state, current_date, station_name, city_name} = labels
 
     for(let i = 0; i < PHONE_NUMBERS; i++){
         let phoneNumber = phone_numbers[i]
+        console.log(phoneNumber);
+        
         await axios({
             method: 'post',
             url: `https://graph.facebook.com/v21.0/${process.env.PHONE_ID}/messages`,
