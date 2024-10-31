@@ -43,15 +43,16 @@ const fluAlert = async obj =>{
 }
 
 async function start(labels){
+    let phoneNumbers = PHONE_NUMBERS.split(',')
     console.log('enviando mensagem de alerta');
     console.log(labels);
-    console.log(PHONE_NUMBERS)
+    console.log(phoneNumbers)
     
     
     let {current_level, current_state, current_date, station_name, city_name} = labels
 
-    for(let i = 0; i < PHONE_NUMBERS.length; i++){
-        let phoneNumber = PHONE_NUMBERS[i]
+    for(let i = 0; i < phoneNumbers.length; i++){
+        let phoneNumber = phoneNumbers[i]
         console.log('envnaidno mesnagem para o numero ', i, phoneNumber);
         
         await axios({
