@@ -1,6 +1,7 @@
 const { default: axios } = require("axios")
 const express = require('express');
 require('dotenv').config()
+const bodyParser = require('body-parser');
 
 
 const app = express()
@@ -8,9 +9,11 @@ const port = process.env.PORT
 const PHONE_NUMBERS = process.env.PHONE_NUMBERS //nao existe api (ao menos n achei) melhorar isso futuramente
 
 
-app.get('/grafana_callback',(req, res)=>{
+app.post('/grafana_callback',(req, res)=>{
     
     let body = req.body
+
+    console.log(req)
 
     if(body && body.receiver === 'SSSP - Alertas de Cotas'){
         //alerta de cota de referencia do grafana
