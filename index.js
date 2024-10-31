@@ -51,7 +51,7 @@ async function start(labels){
 
     for(let i = 0; i < PHONE_NUMBERS.length; i++){
         let phoneNumber = PHONE_NUMBERS[i]
-        console.log(phoneNumber);
+        console.log('envnaidno mesnagem para o numero ', + phoneNumber);
         
         await axios({
             method: 'post',
