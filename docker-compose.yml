@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  sibh-messenger:
+    restart: always
+    build: .
+    ports:
+      - "${PORT}:${PORT}"
+    environment:
+      - PORT=${PORT}
+networks:
+  sibhapi-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.77.0.0/16
