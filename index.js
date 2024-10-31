@@ -50,7 +50,7 @@ async function start(labels){
     let {current_level, current_state, current_date, station_name, city_name} = labels
 
     for(let i = 0; i < PHONE_NUMBERS.length; i++){
-        let phoneNumber = phone_numbers[i]
+        let phoneNumber = PHONE_NUMBERS[i]
         console.log(phoneNumber);
         
         await axios({
