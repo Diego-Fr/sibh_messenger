@@ -53,48 +53,56 @@ async function start(labels){
 
     for(let i = 0; i < phoneNumbers.length; i++){
         let phoneNumber = phoneNumbers[i]
-        console.log('envnaidno mesnagem para o numero ', i, phoneNumber);
+
+        if(['Emergência', 'Extravasamento'].includes(current_state)){
+            console.log('envnaidno mesnagem para o numero ', i, phoneNumber);
         
-        await axios({
-            method: 'post',
-            url: `https://graph.facebook.com/v21.0/${process.env.PHONE_ID}/messages`,
-            headers: {'Authorization': `Bearer ${process.env.WHATSAPP_ACCESS_TOKEN}`},
-            data:{
-                messaging_product: 'whatsapp',
-                recipient_type: "individual",
-                to: phoneNumber,
-                type: 'template',
-                template:{
-                    name: 'alerta_emergencia', 
-                    language: {code: 'pt_BR'},
-                    components:[{
-                        type: 'body',
-                        parameters:[
-                            {
-                                type: 'text',
-                                text: station_name
-                            },
-                            {
-                                type: 'text',
-                                text: city_name
-                            },
-                            {
-                                type: 'text',
-                                text: current_state
-                            },
-                            {
-                                type: 'text',
-                                text: current_date
-                            }
-                        ]
-                    }]
+            await axios({
+                method: 'post',
+                url: `https://graph.facebook.com/v21.0/${process.env.PHONE_ID}/messages`,
+                headers: {'Authorization': `Bearer ${process.env.WHATSAPP_ACCESS_TOKEN}`},
+                data:{
+                    messaging_product: 'whatsapp',
+                    recipient_type: "individual",
+                    to: phoneNumber,
+                    type: 'template',
+                    template:{
+                        name: 'alerta_emergencia', 
+                        language: {code: 'pt_BR'},
+                        components:[{
+                            type: 'body',
+                            parameters:[
+                                {
+                                    type: 'text',
+                                    text: station_name
+                                },
+                                {
+                                    type: 'text',
+                                    text: city_name
+                                },
+                                {
+                                    type: 'text',
+                                    text: current_state
+                                },
+                                {
+                                    type: 'text',
+                                    text: current_date
+                                }
+                            ]
+                        }]
+                    }
                 }
-            }
-        }).then(data=>{
-            console.log('Mensagem enviada');
-            console.log(`Número: ${phoneNumber}`);
+            }).then(data=>{
+                console.log('Mensagem enviada');
+                console.log(`Número: ${phoneNumber}`);
+                
+            })
+        } else {
+            console.log('não é emergencia ou extravasamento, ignorando esse alerta');
             
-        })
+        }
+
+        
     }
     
 }
