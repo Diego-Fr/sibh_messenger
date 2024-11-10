@@ -2,6 +2,7 @@ const { default: axios } = require("axios")
 const express = require('express');
 require('dotenv').config()
 const bodyParser = require('body-parser');
+const {getAlertFromStation,insertAlert} = require('./models/alert')
 
 
 const app = express()
@@ -26,7 +27,6 @@ app.post('/grafana_callback',(req, res)=>{
     res.send('ok')
     
 })
-
 app.listen(port, _=>{
     console.log('Server escutando a porta ' + port);
 })
@@ -49,13 +49,16 @@ async function start(labels){
     console.log(phoneNumbers)
     
     
-    let {current_level, current_state, current_date, station_name, city_name} = labels
+    let {station_prefix_id, current_level, current_state, current_date, station_name, city_name} = labels
 
     for(let i = 0; i < phoneNumbers.length; i++){
         let phoneNumber = phoneNumbers[i]
 
         if(['Emergência', 'Extravasamento'].includes(current_state)){
-            console.log('envnaidno mesnagem para o numero ', i, phoneNumber);
+
+            let alert = await insertAlert(station_prefix_id, current_date, current_state)
+
+            console.log('enviando mesnagem para o numero ', i, phoneNumber);
         
             await axios({
                 method: 'post',
