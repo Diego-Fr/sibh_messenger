@@ -1,4 +1,5 @@
 const axios = require('axios')
+const moment = require('moment')
 
 const getAlertFromStation = async (station_prefix_id, current_date, current_state) =>{
     
@@ -10,7 +11,7 @@ const insertAlert = async (station_prefix_id, current_date, current_state) =>{
         method: 'post',
         url: `https://cth.daee.sp.gov.br/sibh/api/v2/alerts/new`,
         data:{
-            date_hour: current_date,
+            date_hour: moment(current_date).format('YYYY-MM-DD HH:mm'),
             flag: current_state,
             alert_type_id: 1,
             alertable_type: 'StationPrefix',
