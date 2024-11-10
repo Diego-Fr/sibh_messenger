@@ -54,9 +54,9 @@ async function start(labels){
     for(let i = 0; i < phoneNumbers.length; i++){
         let phoneNumber = phoneNumbers[i]
 
-        if(['Emergência', 'Extravasamento'].includes(current_state)){
+        let alert = await insertAlert(station_prefix_id, current_date, current_state)
 
-            let alert = await insertAlert(station_prefix_id, current_date, current_state)
+        if(['Emergência', 'Extravasamento'].includes(current_state)){
 
             console.log('enviando mesnagem para o numero ', i, phoneNumber);
         

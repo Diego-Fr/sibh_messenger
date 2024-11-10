@@ -1,3 +1,5 @@
+const axios = require('axios')
+
 const getAlertFromStation = async (station_prefix_id, current_date, current_state) =>{
     
     return 'testando'
