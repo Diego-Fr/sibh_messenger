@@ -49,7 +49,7 @@ async function start(labels){
     console.log(phoneNumbers)
     
     
-    let {station_prefix_id, current_level, current_state, current_date, station_name, city_name} = labels
+    let {station_prefix_id, current_level, current_state, current_date, station_name, city_name, prefix} = labels
 
     for(let i = 0; i < phoneNumbers.length; i++){
         let phoneNumber = phoneNumbers[i]
@@ -70,7 +70,7 @@ async function start(labels){
                     to: phoneNumber,
                     type: 'template',
                     template:{
-                        name: 'alerta_emergencia', 
+                        name: current_state === 'Emergência' ? 'alerta_emergencia_new' : 'alerta_extravasamento', 
                         language: {code: 'pt_BR'},
                         components:[{
                             type: 'body',
@@ -85,14 +85,18 @@ async function start(labels){
                                 },
                                 {
                                     type: 'text',
-                                    text: current_state
-                                },
-                                {
-                                    type: 'text',
                                     text: current_date
                                 }
                             ]
-                        }]
+                        },
+                        {
+                            type: 'button',
+                            index: 0,
+                            sub_type: 'url',
+                            title: 'SIBH',
+                            url: `https://cth.daee.sp.gov.br/sibh/graficos?station_type=flu&station_prefixes[]=${prefix}`
+                        }
+                        ]
                     }
                 }
             }).then(data=>{
