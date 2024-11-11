@@ -70,32 +70,25 @@ async function start(labels){
                     to: phoneNumber,
                     type: 'template',
                     template:{
-                        name: current_state === 'Emergência' ? 'alerta_emergencia_new' : 'alerta_extravasamento', 
+                        name: current_state === 'Emergência' ? 'alerta_emergencia_new' : 'alerta_extravasamento_new', 
                         language: {code: 'pt_BR'},
                         components:[{
-                            type: 'body',
-                            parameters:[
-                                {
-                                    type: 'text',
-                                    text: station_name
-                                },
-                                {
-                                    type: 'text',
-                                    text: city_name
-                                },
-                                {
-                                    type: 'text',
-                                    text: current_date
-                                }
-                            ]
-                        },
-                        {
-                            type: 'button',
-                            index: 0,
-                            sub_type: 'url',
-                            title: 'SIBH',
-                            url: `https://cth.daee.sp.gov.br/sibh/graficos?station_type=flu&station_prefixes[]=${prefix}`
-                        }
+                                type: 'body',
+                                parameters:[
+                                    {
+                                        type: 'text',
+                                        text: station_name
+                                    },
+                                    {
+                                        type: 'text',
+                                        text: city_name
+                                    },
+                                    {
+                                        type: 'text',
+                                        text: current_date
+                                    }
+                                ]
+                            }
                         ]
                     }
                 }
