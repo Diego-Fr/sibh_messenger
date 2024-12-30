@@ -26,6 +26,15 @@ const insertAlert = async (station_prefix_id, current_date, current_state) =>{
     return true
 }
 
+const getStationAlerts = async station_prefix_id =>{
+    let response = await axios({
+        method: 'GET',
+        url: `https://cth.daee.sp.gov.br/sibh/api/v2/alerts?alertable_type=StationPrefix&alertable_id=${station_prefix_id}`
+    })
+    
+    return response?.data
+}
+
 module.exports = {
-    getAlertFromStation,insertAlert
+    getAlertFromStation,insertAlert,getStationAlerts
 }
