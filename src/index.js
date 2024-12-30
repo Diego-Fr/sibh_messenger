@@ -31,8 +31,6 @@ app.listen(port, _=>{
     console.log('Server escutando a porta ' + port);
 })
 
-start({station_prefix_id:33748})
-
 
 const fluAlert = async obj =>{
     let alerts = obj.alerts.filter(x=>x.status === 'firing') //tem outros status (como resolved), que nao serão analisados aqui
