@@ -70,7 +70,7 @@ async function start(labels){
 
             if(stationAlerts.length === 0 || 
                 stationAlerts.filter(
-                    x=>moment(x.date_hour).format('YYYY-MM-DD HH:mm').isSame(moment(current_date).format('YYYY-MM-DD HH:mm'))
+                    x=>moment(x.date_hour, 'YYYY-MM-DD HH:mm').isSame(moment(current_date, 'YYYY-MM-DD HH:mm'))
                 ).length === 0
             ) {
                 await axios({
