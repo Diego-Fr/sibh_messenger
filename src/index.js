@@ -60,70 +60,72 @@ async function start(labels){
     } catch (e){
         console.log('Erro ao buscar alertas do posto ' + station_prefix_id)
     }
+    if(station_prefix_id && current_date){
+        for(let i = 0; i < phoneNumbers.length; i++){
+            let phoneNumber = phoneNumbers[i]
     
-    for(let i = 0; i < phoneNumbers.length; i++){
-        let phoneNumber = phoneNumbers[i]
-
-        await insertAlert(station_prefix_id, current_date, current_state)
-
-        if(['Emergência', 'Extravasamento'].includes(current_state)){
-
-            if(stationAlerts.length === 0 || 
-                stationAlerts.filter(
-                    x=>moment(x.date_hour, 'YYYY-MM-DD HH:mm').isSame(moment(current_date, 'YYYY-MM-DD HH:mm'))
-                ).length === 0
-            ) {
-                await axios({
-                    method: 'post',
-                    url: `https://graph.facebook.com/v21.0/${process.env.PHONE_ID}/messages`,
-                    headers: {'Authorization': `Bearer ${process.env.WHATSAPP_ACCESS_TOKEN}`},
-                    data:{
-                        messaging_product: 'whatsapp',
-                        recipient_type: "individual",
-                        to: phoneNumber,
-                        type: 'template',
-                        template:{
-                            name: current_state === 'Emergência' ? 'alerta_emergencia_new' : 'alerta_extravasamento_new', 
-                            language: {code: 'pt_BR'},
-                            components:[{
-                                    type: 'body',
-                                    parameters:[
-                                        {
-                                            type: 'text',
-                                            text: station_name
-                                        },
-                                        {
-                                            type: 'text',
-                                            text: city_name
-                                        },
-                                        {
-                                            type: 'text',
-                                            text: current_date
-                                        }
-                                    ]
-                                }
-                            ]
+            await insertAlert(station_prefix_id, current_date, current_state)
+    
+            if(['Emergência', 'Extravasamento'].includes(current_state)){
+    
+                if(stationAlerts.length === 0 || 
+                    stationAlerts.filter(
+                        x=>moment(x.date_hour, 'YYYY-MM-DD HH:mm').isSame(moment(current_date, 'YYYY-MM-DD HH:mm'))
+                    ).length === 0
+                ) {
+                    await axios({
+                        method: 'post',
+                        url: `https://graph.facebook.com/v21.0/${process.env.PHONE_ID}/messages`,
+                        headers: {'Authorization': `Bearer ${process.env.WHATSAPP_ACCESS_TOKEN}`},
+                        data:{
+                            messaging_product: 'whatsapp',
+                            recipient_type: "individual",
+                            to: phoneNumber,
+                            type: 'template',
+                            template:{
+                                name: current_state === 'Emergência' ? 'alerta_emergencia_new' : 'alerta_extravasamento_new', 
+                                language: {code: 'pt_BR'},
+                                components:[{
+                                        type: 'body',
+                                        parameters:[
+                                            {
+                                                type: 'text',
+                                                text: station_name
+                                            },
+                                            {
+                                                type: 'text',
+                                                text: city_name
+                                            },
+                                            {
+                                                type: 'text',
+                                                text: current_date
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
                         }
-                    }
-                }).then(data=>{
-                    console.log('Mensagem enviada');
-                    console.log(`Número: ${phoneNumber}`);
-                    
-                })
-            } else {
-                console.log('Alerta já enviado uma vez');
-            }
-
-            console.log('enviando mesnagem para o numero ', i, phoneNumber);
-        
+                    }).then(data=>{
+                        console.log('Mensagem enviada');
+                        console.log(`Número: ${phoneNumber}`);
+                        
+                    })
+                } else {
+                    console.log('Alerta já enviado uma vez');
+                }
+    
+                console.log('enviando mesnagem para o numero ', i, phoneNumber);
             
-        } else {
-            console.log('não é emergencia ou extravasamento, ignorando esse alerta');
+                
+            } else {
+                console.log('não é emergencia ou extravasamento, ignorando esse alerta');
+                
+            }
+    
             
         }
-
-        
     }
+    
     
 }
 
